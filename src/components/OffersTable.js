@@ -62,7 +62,7 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
         </Avatar>
         <Typography variant="body2" sx={{ fontWeight: "400", mb: 0.5 }}>
           {params.row.companyName}{" "}
-          <span className="font-normal">★{params.row.rating}</span>
+          <span className="font-normal">&#9733;{params.row.rating}</span>
         </Typography>
       </Box>
     </Box>
