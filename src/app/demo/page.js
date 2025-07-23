@@ -1,6 +1,6 @@
 "use client";
 import { Container, createTheme, ThemeProvider } from "@mui/material";
-import OffersTable from "@/components/OffersTable";
+import OffersTable from "@/components/OffersTable1";
 
 const sampleData = [
   {

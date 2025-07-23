@@ -218,6 +218,18 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
               fontSize: "12px",
             }}
           />
+          <Button
+          variant="outlined"
+
+          sx={{
+            textTransform: "none",
+            borderColor: "#D0D5DD",
+            borderRadius: "8px",
+          }}
+          color="#0A1B2B"
+        >
+          Switch to product view
+        </Button>
         </Box>
         <Button
           variant="outlined"
@@ -226,7 +238,6 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
             textTransform: "none",
             borderColor: "#D0D5DD",
             borderRadius: "8px",
-            boxShadow: "1",
           }}
           color="#0A1B2B"
         >
@@ -280,6 +291,7 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
           },
           "& .MuiDataGrid-columnHeaderTitleContainer": {
             justifyContent: "center",
+            color: "#475467",
           },
           "& .MuiDataGrid-columnSeparator": {
             display: "none",
