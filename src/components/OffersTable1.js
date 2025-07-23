@@ -127,7 +127,7 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
   const columns = [
     {
       field: "company",
-      headerName: "Buyer",
+      headerName: "Company",
       flex: 2.1,
       cellClassName: "company-column-cell",
       headerClassName: "company-column-header",
@@ -153,9 +153,14 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
       renderCell: renderStatusCell,
     },
     {
+      field: "offerQty",
+      headerName: "Offer Qty",
+      flex: 1,
+    },
+    {
       field: "totalOfferValue",
       headerName: "Total Offer value",
-      flex: 1,
+      flex: 1.2,
       renderCell: (params) => formatCurrency(params.value),
     },
     {
@@ -163,6 +168,11 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
       headerName: "+/- to Ask Price",
       flex: 1,
       renderCell: (params) => formatPercentage(params.value),
+    },
+    {
+      field: "offerType",
+      headerName: "Offer type",
+      flex: 1,
     },
     {
       field: "avgOffer",
@@ -173,7 +183,7 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
     {
       field: "offerExpiry",
       headerName: "Offer expiry",
-      flex: 1,
+      flex: 0.8,
       renderCell: (params) => (
         <Typography variant="body2" textAlign="center">
           {params.row.expiryDate}
@@ -183,10 +193,9 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
       ),
     },
     {
-      field: "action",
-      headerName: "Action",
-      flex: 1.5,
-      renderCell: renderActionCell,
+      field: "linesInOffer",
+      headerName: "Lines in Offer",
+      flex: 0.9,
     },
   ];
 
