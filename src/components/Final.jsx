@@ -1,12 +1,19 @@
+
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import {Box, Typography, Button, Chip, Avatar, Select, MenuItem, FormControl, Paper, } from "@mui/material";
+import {Box, Typography, Button, Chip, Avatar, Select, MenuItem, FormControl, Paper, IconButton, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Collapse, } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ExpandMore as ExpandMoreIcon, ExpandLess as ExpandLessIcon, } from "@mui/icons-material";
 import Image from "next/image";
 import verified from "@/assets/verified.svg"; 
 import CircleIcon from "@mui/icons-material/Circle";
 
-const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
+import sampleData from "./data";
+import { useState } from 'react';
+
+const Final = ({offers = [], title = "Offers received by Buyers", }) => {
   
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("en-US", {
@@ -197,6 +204,16 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
       headerName: "Lines in Offer",
       flex: 0.9,
     },
+    {
+      field: "btn",
+      headerName: "",
+      flex: 0.9,
+      renderCell: (params) => (
+        <IconButton>
+          <ExpandCircleDownIcon fontSize='large'  sx={{ color: '#344054' }} />
+        </IconButton>
+      ),
+    },
   ];
 
   return (
@@ -254,7 +271,7 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
         </Button>
       </Box>
 
-      <DataGrid
+      {/* <DataGrid
         rows={offers}
         columns={columns}
         pageSize={10}
@@ -314,9 +331,80 @@ const OffersTable = ({offers = [], title = "Offers received by Buyers", }) => {
             justifyContent: "flex-start",
           },
         }}
-      />
+      /> */}
+      <TableContainer component={Paper}>
+      <Table sx={{ borderCollapse: "collapse" }}>
+        <TableHead>
+          <TableRow>
+            <TableCell>Company</TableCell>
+            <TableCell align="right">Offer Received</TableCell>
+            <TableCell align="right">Status</TableCell>
+            <TableCell align="right">Offer Qty (g)</TableCell>
+            <TableCell align="right">Total Offer Value</TableCell>
+            <TableCell align="right">+/- to Ask Price (%)</TableCell>
+            <TableCell align="right">Offer Type</TableCell>
+            <TableCell align="right">Offer Expiry</TableCell>
+            <TableCell align="right">Lines in Offer</TableCell>
+            <TableCell ></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sampleData.map((row) => (
+            <Row key={row.id} row={row} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
     </Paper>
   );
 };
 
-export default OffersTable;
+function Row(props) {
+  const { row } = props;
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <TableRow sx={{  }}>
+        <TableCell component="th" scope="row">
+          {row.companyName}
+        </TableCell>
+        <TableCell align="right">{row.offerReceived}</TableCell>
+        <TableCell align="right">{row.status}</TableCell>
+        <TableCell align="right">{row.offerQty}</TableCell>
+        <TableCell align="right">
+          ${row.totalOfferValue}
+        </TableCell>
+        <TableCell align="right">{row.askPricePercentage}%</TableCell>
+        <TableCell align="right">{row.offerType}</TableCell>
+        <TableCell align="right">{`${row.expiryDate} ${row.expiryTime}`}</TableCell>
+        <TableCell align="right">{row.linesInOffer}</TableCell>
+        <TableCell>
+          {row.hasDetails && (
+            <IconButton size="small" onClick={() => setOpen(!open)}>
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          )}
+        </TableCell>
+      </TableRow>
+
+      {row.hasDetails && (
+        <TableRow  >
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 , borderCollapse: "collapse"}} colSpan={10}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box>
+                Additional Details : <br />
+                {row.rating} / 5 <br />
+                {row.avgOffer} <br />
+                {row.action} <br />
+                {row.companyInitials} <br />
+            </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      )}
+    </>
+  );
+}
+
+export default Final;
