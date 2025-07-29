@@ -1,5 +1,5 @@
-import OffersTableMui from "@/components/OffersTableMui";
-
-export default function page() {
-  return <OffersTableMui />;
+export default function Hello() {
+  return (
+    <div>Hello</div>
+  )
 }
