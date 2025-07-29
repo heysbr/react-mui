@@ -1,4 +1,4 @@
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useMemo } from 'react';
 import {
   Paper,
   Table,
@@ -8,56 +8,76 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import TableHeader from './OffersTable/TableHeader';
-import TableFooter from './OffersTable/TableFooter';
-import TableRowComponent from './OffersTable/TableRowComponent';
-import { COLORS } from './OffersTable/constants';
+import TableHeader from './TableHeader';
+import TableFooter from './TableFooter';
+import TableRowComponent from './TableRowComponent';
+import { 
+  COLORS, 
+  TABLE_VARIANTS, 
+  COLUMN_CONFIGS 
+} from './constants';
 
-const COLUMN_HEADERS = [
-  { label: "Company", width: "18%", align: "left" },
-  { label: "Offer received", width: "9%" },
-  { label: "Status", width: "8%" },
-  { label: "Offer Qty", width: "8%" },
-  { label: "Total Offer value", width: "11%" },
-  { label: "+/- to Ask Price", width: "10%" },
-  { label: "Offer type", width: "9%" },
-  { label: "Avg. Offer (ea)", width: "9%" },
-  { label: "Offer expiry", width: "8%" },
-  { label: "Lines in Offer", width: "8%" },
-  { label: "", width: "7%" },
-];
-
+/**
+ * Modern, optimized offers table component with multiple view modes
+ */
 const OffersTable = memo(({ 
   offers = [], 
   title = "Offers received by Buyers",
+  variant = TABLE_VARIANTS.SIMPLE,
   onExportData,
+  onActionChange,
   onSubmit,
+  onVariantChange,
+  showVariantSwitch = false,
 }) => {
   const [expandedRowId, setExpandedRowId] = useState(null);
 
+  // Memoized column configuration
+  const columnHeaders = useMemo(() => 
+    COLUMN_CONFIGS[variant] || COLUMN_CONFIGS[TABLE_VARIANTS.SIMPLE], 
+    [variant]
+  );
+
+  // Optimized event handlers
   const handleExpandClick = useCallback((rowId) => {
     setExpandedRowId(prev => prev === rowId ? null : rowId);
   }, []);
 
   const handleExportData = useCallback(() => {
-    onExportData?.();
-  }, [onExportData]);
+    console.log('Exporting offers data...');
+    onExportData?.(variant, offers);
+  }, [onExportData, variant, offers]);
+
+  const handleActionChange = useCallback((rowId, action) => {
+    console.log('Action changed:', { rowId, action });
+    onActionChange?.(rowId, action, variant);
+  }, [onActionChange, variant]);
 
   const handleSubmit = useCallback(() => {
-    onSubmit?.();
-  }, [onSubmit]);
+    console.log('Submitting offers...');
+    onSubmit?.(variant, offers);
+  }, [onSubmit, variant, offers]);
+
+  const handleVariantChange = useCallback((newVariant) => {
+    setExpandedRowId(null); // Reset expansion when switching
+    onVariantChange?.(newVariant);
+  }, [onVariantChange]);
 
   return (
-    <Paper>
+    <Paper elevation={1}>
       <TableHeader 
         title={title}
         offersCount={offers.length}
         onExportData={handleExportData}
+        variant={variant}
+        showVariantSwitch={showVariantSwitch}
+        onVariantChange={handleVariantChange}
+        currentVariant={variant}
       />
 
       <TableContainer sx={{
-        borderBottomLeftRadius: "8px",
-        borderBottomRightRadius: "8px",
+        borderBottomLeftRadius: variant === TABLE_VARIANTS.EXPANDABLE ? "0px" : "8px",
+        borderBottomRightRadius: variant === TABLE_VARIANTS.EXPANDABLE ? "0px" : "8px",
         borderTopLeftRadius: "0px",
         borderTopRightRadius: "0px",
         borderTop: "0px",
@@ -69,7 +89,7 @@ const OffersTable = memo(({
                 fontWeight: "500",
                 fontSize: "12px",
                 color: COLORS.secondary,
-                backgroundColor: "#FAFAFA",
+                backgroundColor: COLORS.tableHeader,
                 textAlign: "center",
                 borderBottom: `1px solid ${COLORS.border}`,
                 padding: "16px 8px",
@@ -78,7 +98,7 @@ const OffersTable = memo(({
                 textAlign: "left",
               }
             }}>
-              {COLUMN_HEADERS.map((header, index) => (
+              {columnHeaders.map((header, index) => (
                 <TableCell 
                   key={header.label}
                   className={index === 0 ? "company-column-header" : ""}
@@ -94,15 +114,19 @@ const OffersTable = memo(({
               <TableRowComponent
                 key={row.id}
                 row={row}
+                variant={variant}
                 expandedRowId={expandedRowId}
                 onExpandClick={handleExpandClick}
+                onActionChange={handleActionChange}
               />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       
-      <TableFooter onSubmit={handleSubmit} />
+      {variant === TABLE_VARIANTS.EXPANDABLE && (
+        <TableFooter onSubmit={handleSubmit} />
+      )}
     </Paper>
   );
 });

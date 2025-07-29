@@ -1,112 +1,51 @@
-// Constants for styling and configuration
+// Design system colors and configuration
 export const COLORS = {
-  primary: '#0A1B2B',
-  secondary: '#475467',
-  success: '#10B981',
-  error: '#EF4444',
-  warning: '#FDB022',
-  border: '#EAECF0',
-  background: '#F9FAFB',
-  expandedBg: '#F8F9FA',
-  hover: 'rgba(234, 236, 240, 0.4)',
-  offerChip: '#ECEDFE',
-  offerChipText: '#5056D6',
-  countChip: '#F4F3FF',
-  statusBorder: '#FEC84B',
-  accent: '#6366F1',
+  primary: "#0A1B2B",
+  secondary: "#475467", 
+  success: "#4caf50",
+  error: "#f44336",
+  warning: "#FDB022",
+  background: "#F9FAFB",
+  surface: "#FFFFFF",
+  border: "#EAECF0",
+  tableHeader: "#FAFAFA",
+  chipBackground: "#F4F3FF",
+  chipBlue: "#ECEDFE",
+  chipBlueText: "#5056D6",
+  hover: "rgba(234, 236, 240, 0.4)",
+  button: "#6366F1",
+  buttonHover: "#5856eb",
 };
 
-export const SIZES = {
-  avatar: 40,
-  rowHeight: 98,
-  borderRadius: '8px',
-  headerFontSize: '12px',
-  bodyFontSize: '12px',
+// Table view variants
+export const TABLE_VARIANTS = {
+  SIMPLE: 'simple',
+  EXPANDABLE: 'expandable'
 };
 
-export const SAMPLE_EXPANDED_DATA = [
-  {
-    lineNumber: "001",
-    product: "Apple iPhone 11 128GB A-1",
-    availableQty: 200,
-    askPrice: 756.00,
-    offers: [
-      { 
-        company: "Phone Bid International", 
-        companyInitials: "PBI", 
-        rating: 4.5, 
-        offer: 800.00, 
-        percentage: 6.3, 
-        qty: 10, 
-        totalValue: 7000.00, 
-        avgOffer: 795.00, 
-        avgPercentage: 6.3, 
-        action: "Select" 
-      },
-    ]
-  },
-  {
-    lineNumber: "002", 
-    product: "Apple iPhone 11 128GB A-2",
-    availableQty: 200,
-    askPrice: "Undefined",
-    offers: [
-      { 
-        company: "Phone Bid International", 
-        companyInitials: "PBI", 
-        rating: 4.5, 
-        offer: 800.00, 
-        percentage: "-", 
-        qty: 10, 
-        totalValue: 7000.00, 
-        avgOffer: 795.00, 
-        avgPercentage: 6.3, 
-        action: "Select" 
-      },
-      { 
-        company: "CY Global", 
-        companyInitials: "CY", 
-        rating: 3.8, 
-        offer: 700.00, 
-        percentage: "-", 
-        qty: 40, 
-        totalValue: 28000.00, 
-        avgOffer: 0, 
-        avgPercentage: 12.3, 
-        action: "Go to offer" 
-      },
-      { 
-        company: "Device Trade Australia", 
-        companyInitials: "D", 
-        rating: 3.8, 
-        offer: 810.00, 
-        percentage: "-", 
-        qty: 40, 
-        totalValue: 32400.00, 
-        avgOffer: 0, 
-        avgPercentage: 15.3, 
-        action: "Go to offer" 
-      },
-    ]
-  },
-  {
-    lineNumber: "003",
-    product: "Apple iPhone 11 128GB CPO", 
-    availableQty: 200,
-    askPrice: 756.00,
-    offers: [
-      { 
-        company: "Phone Bid International", 
-        companyInitials: "PBI", 
-        rating: 4.5, 
-        offer: 800.00, 
-        percentage: 6.3, 
-        qty: 10, 
-        totalValue: 7000.00, 
-        avgOffer: 795.00, 
-        avgPercentage: 6.3, 
-        action: "Accept" 
-      },
-    ]
-  }
-];
+// Column configurations for each variant
+export const COLUMN_CONFIGS = {
+  [TABLE_VARIANTS.SIMPLE]: [
+    { label: "Buyer", width: "25%", align: "left" },
+    { label: "Offer received", width: "12%" },
+    { label: "Status", width: "10%" },
+    { label: "Total Offer value", width: "13%" },
+    { label: "+/- to Ask Price", width: "12%" },
+    { label: "Avg. Offer (ea)", width: "12%" },
+    { label: "Offer expiry", width: "11%" },
+    { label: "Action", width: "15%" },
+  ],
+  [TABLE_VARIANTS.EXPANDABLE]: [
+    { label: "Company", width: "18%", align: "left" },
+    { label: "Offer received", width: "9%" },
+    { label: "Status", width: "8%" },
+    { label: "Offer Qty", width: "8%" },
+    { label: "Total Offer value", width: "11%" },
+    { label: "+/- to Ask Price", width: "10%" },
+    { label: "Offer type", width: "9%" },
+    { label: "Avg. Offer (ea)", width: "9%" },
+    { label: "Offer expiry", width: "8%" },
+    { label: "Lines in Offer", width: "8%" },
+    { label: "", width: "7%" },
+  ]
+};

@@ -1,6 +1,7 @@
 "use client";
 import { Container, createTheme, ThemeProvider } from "@mui/material";
 import OffersTable from "@/components/OffersTable";
+import { TABLE_VARIANTS } from "@/components/OffersTable/constants";
 
 const sampleData = [
   {
@@ -80,12 +81,15 @@ const theme = createTheme({
   }
 });
 
-export default function Page() {
-
+export default function HomePage() {
   return (
     <ThemeProvider theme={theme}>
-      <Container width="100%" sx={{ py: 4 }}>
-        <OffersTable offers={sampleData} title="Offers received by Buyers" />
+      <Container maxWidth="xl" sx={{ py: 4 }}>
+        <OffersTable 
+          offers={sampleData} 
+          title="Offers received by Buyers"
+          variant={TABLE_VARIANTS.SIMPLE}
+        />
       </Container>
     </ThemeProvider>
   );

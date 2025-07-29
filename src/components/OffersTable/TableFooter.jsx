@@ -1,7 +1,10 @@
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Box, Button } from "@mui/material";
 import { COLORS } from './constants';
 
+/**
+ * Table footer component for expandable variant
+ */
 const TableFooter = memo(({ onSubmit }) => (
   <Box sx={{ 
     display: 'flex', 
@@ -14,8 +17,8 @@ const TableFooter = memo(({ onSubmit }) => (
       variant="contained"
       onClick={onSubmit}
       sx={{
-        backgroundColor: COLORS.accent,
-        "&:hover": { backgroundColor: "#5856eb" },
+        backgroundColor: COLORS.button,
+        "&:hover": { backgroundColor: COLORS.buttonHover },
         textTransform: "none",
         px: 4,
         py: 1.5,

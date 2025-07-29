@@ -1,26 +1,57 @@
-// Utility functions
+/**
+ * Unified utility functions for all table variants
+ */
+
+/**
+ * Format a number as currency (USD)
+ */
 export const formatCurrency = (value) => {
+  if (value === null || value === undefined) return "-";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
   }).format(value);
 };
 
-export const formatDate = (date) => {
-  const dateObj = new Date(date);
-  return `${dateObj.getDate()} ${dateObj.toLocaleDateString("en-US", {
+/**
+ * Format a date from string/Date object to display format
+ */
+export const formatDate = (dateInput) => {
+  const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+  return `${date.getDate()} ${date.toLocaleDateString("en-US", {
     month: "short",
-  })} ${dateObj.getFullYear()}`;
+  })} ${date.getFullYear()}`;
 };
 
-export const formatPercentage = (value, showColors = true) => {
-  if (value === "-") return "-";
-  
-  const color = showColors ? (value >= 0 ? "#10B981" : "#EF4444") : "#374151";
-  const sign = value >= 0 ? "+" : "";
-  
+/**
+ * Get color for percentage values
+ */
+export const getPercentageColor = (value) => {
+  return value >= 0 ? "#4caf50" : "#f44336";
+};
+
+/**
+ * Format percentage with color
+ */
+export const formatPercentage = (value) => {
+  if (value === null || value === undefined || value === "-") return "-";
   return {
-    value: `${sign}${value}%`,
-    color,
+    value: `${value >= 0 ? "+" : ""}${value}%`,
+    color: getPercentageColor(value)
+  };
+};
+
+/**
+ * Debounce function for performance optimization
+ */
+export const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
   };
 };

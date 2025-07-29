@@ -1,14 +1,20 @@
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { IconButton } from "@mui/material";
 import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
-import { COLORS } from './constants';
 
-const ExpandButton = memo(({ isExpanded, onClick }) => (
-  <IconButton onClick={onClick}>
+/**
+ * Expand button component for expandable table variant
+ */
+const ExpandButton = memo(({ 
+  isExpanded, 
+  onExpandClick, 
+  rowId 
+}) => (
+  <IconButton onClick={() => onExpandClick(rowId)}>
     <ExpandCircleDownIcon 
       fontSize='large' 
       sx={{ 
-        color: COLORS.secondary,
+        color: '#344054',
         transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
         transition: 'transform 0.3s ease'
       }} 

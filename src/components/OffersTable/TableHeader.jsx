@@ -1,13 +1,19 @@
-import { memo } from 'react';
-import { Box, Typography, Button, Chip } from "@mui/material";
+import React, { memo } from 'react';
+import { Box, Typography, Chip, Button } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { COLORS } from './constants';
+import { COLORS, TABLE_VARIANTS } from './constants';
 
+/**
+ * Unified table header with variant-specific features
+ */
 const TableHeader = memo(({ 
   title, 
   offersCount, 
-  onExportData, 
-  showSwitchView = true 
+  onExportData,
+  variant = TABLE_VARIANTS.SIMPLE,
+  showVariantSwitch = false,
+  onVariantChange,
+  currentVariant
 }) => (
   <Box
     sx={{
@@ -29,23 +35,41 @@ const TableHeader = memo(({
       <Chip
         label={`${offersCount} Offers`}
         sx={{
-          backgroundColor: COLORS.countChip,
+          backgroundColor: COLORS.chipBackground,
           fontWeight: "500",
           color: COLORS.primary,
           fontSize: "12px",
         }}
       />
-      {showSwitchView && (
+      {variant === TABLE_VARIANTS.EXPANDABLE && (
         <Button
           variant="outlined"
           sx={{
             textTransform: "none",
             borderColor: "#D0D5DD",
             borderRadius: "8px",
+            color: COLORS.primary,
           }}
-          color={COLORS.primary}
         >
           Switch to product view
+        </Button>
+      )}
+      {showVariantSwitch && (
+        <Button
+          variant="outlined"
+          onClick={() => onVariantChange?.(
+            currentVariant === TABLE_VARIANTS.SIMPLE 
+              ? TABLE_VARIANTS.EXPANDABLE 
+              : TABLE_VARIANTS.SIMPLE
+          )}
+          sx={{
+            textTransform: "none",
+            borderColor: "#D0D5DD",
+            borderRadius: "8px",
+            color: COLORS.primary,
+          }}
+        >
+          Switch to {currentVariant === TABLE_VARIANTS.SIMPLE ? 'Expandable' : 'Simple'} View
         </Button>
       )}
     </Box>
