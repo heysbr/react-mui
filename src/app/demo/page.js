@@ -1,6 +1,6 @@
 "use client";
 import { Container, createTheme, ThemeProvider } from "@mui/material";
-import OffersTable from "@/components/OffersTable";
+import OffersTable from "@/components/OffersTable/OffersTable";
 import { TABLE_VARIANTS } from "@/components/OffersTable/constants";
 
 const sampleData = [
