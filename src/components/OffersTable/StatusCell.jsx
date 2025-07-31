@@ -21,23 +21,35 @@ const StatusCell = memo(({
 
   return (
     <Chip
-      label={
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <CircleIcon sx={{ fontSize: "8px", color: getStatusColor(status) }} />
-          {status}
-        </Box>
-      }
-      sx={{
-        backgroundColor: COLORS.surface,
-        color: COLORS.primary,
-        border: `1.5px solid #FEC84B`,
-        fontWeight: "500",
-        fontSize: "12px",
-        ...(variant === 'expandable' && {
-          minWidth: '80px'
-        })
+  label={
+    <Box 
+      sx={{ 
+        display: "flex",
+        alignItems: "center",
+        p: 0,
+        gap: 0.5, // Ensure this is 0 if you want no space between icon and text
+        m: 0
       }}
-    />
+    >
+      <CircleIcon sx={{ fontSize: "6px", color: getStatusColor(status), m: 0 }} />
+      {status}
+    </Box>
+  }
+  sx={{
+    backgroundColor: COLORS.surface,
+    color: COLORS.primary,
+    border: "1.5px solid #FEC84B",
+    fontWeight: "500",
+    fontSize: "12px",
+    padding: 0,
+    margin: 0,
+    '& .MuiChip-label': { padding: "2px 8px", margin: "0px", lineHeight: 1 }, // Add lineHeight to reduce internal space
+    minHeight: "unset", // Optionally remove default height
+    height: "auto",     // Let content decide height
+    '.MuiSvgIcon-root': { m: 0, p: "0px" }, // Removes extra icon margin/padding
+  }}
+/>
+
   );
 });
 

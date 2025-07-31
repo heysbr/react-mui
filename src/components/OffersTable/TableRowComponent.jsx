@@ -20,7 +20,8 @@ const TableRowComponent = memo(({
   onActionChange 
 }) => {
   const isExpanded = expandedRowId === row.id;
-  const showOfferChip = variant === TABLE_VARIANTS.EXPANDABLE;
+  // const showOfferChip = variant === TABLE_VARIANTS.EXPANDABLE;
+  const showOfferChip = true;
 
   const renderCells = () => {
     const commonCells = [
@@ -38,13 +39,18 @@ const TableRowComponent = memo(({
     if (variant === TABLE_VARIANTS.SIMPLE) {
       return [
         ...commonCells,
-        <TableCell key="totalValue">
+        <TableCell key="totalValue" sx={{ 
+          fontSize: '18px', 
+          fontWeight: 500 
+        }}>
           {formatCurrency(row.totalOfferValue)}
         </TableCell>,
-        <TableCell key="percentage">
+        <TableCell key="percentage" >
           <PercentageCell value={row.askPricePercentage} />
         </TableCell>,
-        <TableCell key="avgOffer">
+        <TableCell key="avgOffer" sx={{ 
+          fontSize: '18px' 
+        }}>
           {formatCurrency(row.avgOffer)}
         </TableCell>,
         <TableCell key="expiry">
@@ -66,16 +72,21 @@ const TableRowComponent = memo(({
       <TableCell key="qty">
         {row.offerQty}
       </TableCell>,
-      <TableCell key="totalValue">
+      <TableCell key="totalValue" sx={{ 
+        fontSize: '18px', 
+        fontWeight: 500 
+      }}>
         {formatCurrency(row.totalOfferValue)}
       </TableCell>,
-      <TableCell key="percentage">
+      <TableCell key="percentage" >
         <PercentageCell value={row.askPricePercentage} />
       </TableCell>,
       <TableCell key="type">
         {row.offerType}
       </TableCell>,
-      <TableCell key="avgOffer">
+      <TableCell key="avgOffer" sx={{ 
+        fontSize: '18px' 
+      }}>
         {formatCurrency(row.avgOffer)}
       </TableCell>,
       <TableCell key="expiry">

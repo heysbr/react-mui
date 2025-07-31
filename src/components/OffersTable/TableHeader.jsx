@@ -2,6 +2,9 @@ import React, { memo } from 'react';
 import { Box, Typography, Chip, Button } from "@mui/material";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { COLORS, TABLE_VARIANTS } from './constants';
+import DownloadBtn from '../DownloadBtn';
+
+
 
 /**
  * Unified table header with variant-specific features
@@ -75,7 +78,7 @@ const TableHeader = memo(({
     </Box>
     <Button
       variant="outlined"
-      startIcon={<CloudDownloadIcon />}
+      startIcon={<DownloadBtn />}
       onClick={onExportData}
       sx={{
         textTransform: "none",
@@ -92,3 +95,5 @@ const TableHeader = memo(({
 TableHeader.displayName = 'TableHeader';
 
 export default TableHeader;
+
+

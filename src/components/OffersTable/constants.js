@@ -26,7 +26,7 @@ export const TABLE_VARIANTS = {
 // Column configurations for each variant
 export const COLUMN_CONFIGS = {
   [TABLE_VARIANTS.SIMPLE]: [
-    { label: "Buyer", width: "25%", align: "left" },
+    { label: "Buyer", width: "20%", align: "left" },
     { label: "Offer received", width: "12%" },
     { label: "Status", width: "10%" },
     { label: "Total Offer value", width: "13%" },

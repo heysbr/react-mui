@@ -64,10 +64,7 @@ const OffersTable = memo(({
   }, [onVariantChange]);
 
   return (
-    <Paper elevation={0} sx={{
-      borderRadius: "8px",
-      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-    }}>
+    <Paper elevation={1}>
       <TableHeader 
         title={title}
         offersCount={offers.length}
@@ -92,20 +89,26 @@ const OffersTable = memo(({
                 fontWeight: "500",
                 fontSize: "12px",
                 color: COLORS.secondary,
+                backgroundColor: COLORS.tableHeader,
                 textAlign: "center",
                 borderBottom: `1px solid ${COLORS.border}`,
                 padding: "16px 8px",
               },
               "& .company-column-header": {
                 textAlign: "left",
-                paddingLeft: "20px",
-                
+              },
+              "& .total-offer-value-header": {
+                fontSize: "18px",
+                fontWeight: 500,
               }
             }}>
               {columnHeaders.map((header, index) => (
                 <TableCell 
                   key={header.label}
-                  className={index === 0 ? "company-column-header" : ""}
+                  className={
+                    index === 0 ? "company-column-header" : 
+                    header.label === "Total Offer value" ? "total-offer-value-header" : ""
+                  }
                   sx={{ width: header.width }}
                 >
                   {header.label}

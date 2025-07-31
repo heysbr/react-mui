@@ -14,8 +14,10 @@ const PercentageCell = memo(({ value }) => {
 
   return (
     <Typography sx={{ 
+      // color: formatted.color, 
       color: formatted.color, 
-      fontWeight: "bold" 
+      fontWeight: "400", 
+      fontSize: '18px',
     }}>
       {formatted.value}
     </Typography>

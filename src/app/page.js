@@ -77,7 +77,7 @@ const sampleData = [
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Outfit",
+    fontFamily: "Inter",
   }
 });
 
