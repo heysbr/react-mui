@@ -84,6 +84,7 @@ const theme = createTheme({
 export default function HomePage() {
   return (
     <ThemeProvider theme={theme}>
+      Hello world
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <OffersTable 
           offers={sampleData} 
