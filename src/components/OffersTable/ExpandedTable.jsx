@@ -99,9 +99,7 @@ const EXPANDED_DATA = [
   },
 ];
 
-/**
- * Expanded table showing detailed breakdown for selected offers
- */
+
 const ExpandedTable = memo(({ rowId }) => {
   const data = EXPANDED_DATA; // In real app, this would be dynamic based on rowId
   const [expandedRows, setExpandedRows] = useState(new Set());
@@ -115,82 +113,6 @@ const ExpandedTable = memo(({ rowId }) => {
     }
     setExpandedRows(newExpandedRows);
   };
-
-  const renderSubTable = (subOffers) => (
-    <Table size="small">
-      <TableBody>
-        {subOffers.map((subOffer, index) => (
-          <TableRow 
-            key={subOffer.lineNumber}
-            sx={{
-              "& .MuiTableCell-body": {
-                backgroundColor: "#F9FAFB",
-                fontSize: "12px",
-                color: "#374151",
-                padding: "8px 12px",
-                textAlign: "center",
-                border: "1px solid black",
-              }
-            }}
-          >
-            <TableCell sx={{ textAlign: "left", fontWeight: "500" }}>
-              -
-            </TableCell>
-            <TableCell sx={{ textAlign: "left" }}>
-              {subOffer.product}
-            </TableCell>
-            <TableCell>
-              -
-            </TableCell>
-            <TableCell>
-              -
-            </TableCell>
-            <TableCell>
-              {formatCurrency(subOffer.offer)}
-            </TableCell>
-            <TableCell>
-              -
-            </TableCell>
-            <TableCell>
-              {subOffer.availableQty}
-            </TableCell>
-            <TableCell>
-              {formatCurrency(subOffer.totalValue)}
-            </TableCell>
-            <TableCell>
-              -
-            </TableCell>
-            <TableCell>
-              <Typography sx={{ 
-                color: subOffer.avgPercentage >= 0 ? "#10B981" : "#EF4444",
-                fontWeight: "600"
-              }}>
-                {subOffer.avgPercentage >= 0 ? "+" : ""}{subOffer.avgPercentage}%
-              </Typography>
-            </TableCell>
-            <TableCell>
-              -
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="text"
-                size="small"
-                sx={{ 
-                  textTransform: "none",
-                  color: "#6366F1",
-                  textDecoration: "underline",
-                  fontSize: "12px",
-                  "&:hover": { backgroundColor: "transparent" }
-                }}
-              >
-                Goto Offer
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
 
   return (
     <Box sx={{ backgroundColor: "#EAECF0", p: 0 }}>
@@ -305,23 +227,76 @@ const ExpandedTable = memo(({ rowId }) => {
                 </TableCell>
               </TableRow>
               
-              {/* Sub-table without header */}
-
-                <TableRow>
-                  <TableCell 
-                    colSpan={12} 
-                    sx={{ 
-                      padding: 0,
-                      borderBottom: expandedRows.has(line.lineNumber) ? `1px solid ${COLORS.border}` : "none"
-                    }}
-                  >
-                    <Collapse in={expandedRows.has(line.lineNumber)} timeout="auto" unmountOnExit>
-                      <Box sx={{ backgroundColor: "#F9FAFB", p: 0 }}> 
-                        {renderSubTable(line.subOffers)}
-                      </Box>
-                    </Collapse>
+              {/* Sub-offers rows - directly in the same table structure */}
+              {expandedRows.has(line.lineNumber) && line.subOffers && line.subOffers.map((subOffer, subIndex) => (
+                <TableRow 
+                  key={`${line.lineNumber}-${subOffer.lineNumber}`}
+                  sx={{
+                    "& .MuiTableCell-body": {
+                      backgroundColor: "#F9FAFB",
+                      fontSize: "12px",
+                      color: "#374151",
+                      padding: "8px 12px",
+                      textAlign: "center",
+                      borderBottom: "1px solid #E5E7EB",
+                    }
+                  }}
+                >
+                  <TableCell sx={{ textAlign: "left", fontWeight: "500" }}>
+                    -
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "left" }}>
+                    {subOffer.product}
+                  </TableCell>
+                  <TableCell>
+                    -
+                  </TableCell>
+                  <TableCell>
+                    -
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(subOffer.offer)}
+                  </TableCell>
+                  <TableCell>
+                    -
+                  </TableCell>
+                  <TableCell>
+                    {subOffer.availableQty}
+                  </TableCell>
+                  <TableCell>
+                    {formatCurrency(subOffer.totalValue)}
+                  </TableCell>
+                  <TableCell>
+                    -
+                  </TableCell>
+                  <TableCell>
+                    <Typography sx={{ 
+                      color: subOffer.avgPercentage >= 0 ? "#10B981" : "#EF4444",
+                      fontWeight: "600"
+                    }}>
+                      {subOffer.avgPercentage >= 0 ? "+" : ""}{subOffer.avgPercentage}%
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    -
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="text"
+                      size="small"
+                      sx={{ 
+                        textTransform: "none",
+                        color: "#6366F1",
+                        textDecoration: "underline",
+                        fontSize: "12px",
+                        "&:hover": { backgroundColor: "transparent" }
+                      }}
+                    >
+                      Goto Offer
+                    </Button>
                   </TableCell>
                 </TableRow>
+              ))}
 
             </React.Fragment>
           ))}
