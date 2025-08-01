@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { 
   Box, 
   Table, 
@@ -11,7 +11,9 @@ import {
   FormControl,
   Select,
   MenuItem,
-  IconButton
+  IconButton,
+  Collapse,
+  Tab
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { formatCurrency } from './utils';
@@ -24,53 +26,77 @@ const EXPANDED_DATA = [
     product: "Apple iPhone 11 128GB A-1",
     availableQty: 200,
     askPrice: 756.00,
-    offers: [
-      { 
-        company: "Phone Bid International", 
-        companyInitials: "PBI", 
-        rating: 4.5, 
-        offer: 800.00, 
-        percentage: 6.3, 
-        qty: 10, 
-        totalValue: 7000.00, 
-        avgOffer: 795.00, 
-        avgPercentage: 6.3, 
-        action: "Select" 
+    offer: 800.00,
+    avgPercentage: 6.3, 
+    totalValue: 7000.00, 
+    avgOffer: 795.00, 
+    percentage: 6.3, 
+    action: "Select",
+    subOffers: [
+      {
+        lineNumber: "001-A",
+        product: "Sub Offer 1",
+        availableQty: 100,
+        askPrice: 750.00,
+        offer: 780.00,
+        avgPercentage: 4.0,
+        totalValue: 3500.00,
+        avgOffer: 775.00,
+        percentage: 4.0,
+        action: "Select",
       },
+      {
+        lineNumber: "001-B",
+        product: "Sub Offer 2",
+        availableQty: 100,
+        askPrice: 762.00,
+        offer: 820.00,
+        avgPercentage: 7.6,
+        totalValue: 3500.00,
+        avgOffer: 815.00,
+        percentage: 7.6,
+        action: "Select",
+      }
     ]
   },
   {
-    lineNumber: "002", 
-    product: "Apple iPhone 11 128GB A-2",
+    lineNumber: "002",
+    product: "Apple iPhone 11 128GB A-1",
     availableQty: 200,
-    askPrice: "Undefined",
-    offers: [
-      { 
-        company: "Phone Bid International", 
-        companyInitials: "PBI", 
-        rating: 4.5, 
-        offer: 800.00, 
-        percentage: "-", 
-        qty: 10, 
-        totalValue: 7000.00, 
-        avgOffer: 795.00, 
-        avgPercentage: 6.3, 
-        action: "Select" 
+    askPrice: 756.00,
+    offer: 800.00,
+    avgPercentage: 6.3, 
+    totalValue: 7000.00, 
+    avgOffer: 795.00, 
+    percentage: 6.3, 
+    action: "Select",
+    subOffers: [
+      {
+        lineNumber: "001-A",
+        product: "Sub Offer 1",
+        availableQty: 100,
+        askPrice: 750.00,
+        offer: 780.00,
+        avgPercentage: 4.0,
+        totalValue: 3500.00,
+        avgOffer: 775.00,
+        percentage: 4.0,
+        action: "Select",
       },
-      { 
-        company: "CY Global", 
-        companyInitials: "CY", 
-        rating: 3.8, 
-        offer: 700.00, 
-        percentage: "-", 
-        qty: 40, 
-        totalValue: 28000.00, 
-        avgOffer: 0, 
-        avgPercentage: 12.3, 
-        action: "Go to offer" 
-      },
+      {
+        lineNumber: "001-B",
+        product: "Sub Offer 2",
+        availableQty: 100,
+        askPrice: 762.00,
+        offer: 820.00,
+        avgPercentage: 7.6,
+        totalValue: 3500.00,
+        avgOffer: 815.00,
+        percentage: 7.6,
+        action: "Select",
+      }
     ]
-  }
+  },
 ];
 
 /**
@@ -78,23 +104,110 @@ const EXPANDED_DATA = [
  */
 const ExpandedTable = memo(({ rowId }) => {
   const data = EXPANDED_DATA; // In real app, this would be dynamic based on rowId
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  const handleExpandClick = (lineNumber) => {
+    const newExpandedRows = new Set(expandedRows);
+    if (newExpandedRows.has(lineNumber)) {
+      newExpandedRows.delete(lineNumber);
+    } else {
+      newExpandedRows.add(lineNumber);
+    }
+    setExpandedRows(newExpandedRows);
+  };
+
+  const renderSubTable = (subOffers) => (
+    <Table size="small">
+      <TableBody>
+        {subOffers.map((subOffer, index) => (
+          <TableRow 
+            key={subOffer.lineNumber}
+            sx={{
+              "& .MuiTableCell-body": {
+                backgroundColor: "#F9FAFB",
+                fontSize: "12px",
+                color: "#374151",
+                padding: "8px 12px",
+                textAlign: "center",
+                border: "1px solid black",
+              }
+            }}
+          >
+            <TableCell sx={{ textAlign: "left", fontWeight: "500" }}>
+              -
+            </TableCell>
+            <TableCell sx={{ textAlign: "left" }}>
+              {subOffer.product}
+            </TableCell>
+            <TableCell>
+              -
+            </TableCell>
+            <TableCell>
+              -
+            </TableCell>
+            <TableCell>
+              {formatCurrency(subOffer.offer)}
+            </TableCell>
+            <TableCell>
+              -
+            </TableCell>
+            <TableCell>
+              {subOffer.availableQty}
+            </TableCell>
+            <TableCell>
+              {formatCurrency(subOffer.totalValue)}
+            </TableCell>
+            <TableCell>
+              -
+            </TableCell>
+            <TableCell>
+              <Typography sx={{ 
+                color: subOffer.avgPercentage >= 0 ? "#10B981" : "#EF4444",
+                fontWeight: "600"
+              }}>
+                {subOffer.avgPercentage >= 0 ? "+" : ""}{subOffer.avgPercentage}%
+              </Typography>
+            </TableCell>
+            <TableCell>
+              -
+            </TableCell>
+            <TableCell>
+              <Button
+                variant="text"
+                size="small"
+                sx={{ 
+                  textTransform: "none",
+                  color: "#6366F1",
+                  textDecoration: "underline",
+                  fontSize: "12px",
+                  "&:hover": { backgroundColor: "transparent" }
+                }}
+              >
+                Goto Offer
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
 
   return (
-    <Box sx={{ backgroundColor: "#F8F9FA", p: 2 }}>
+    <Box sx={{ backgroundColor: "#EAECF0", p: 0 }}>
       <Table size="small">
         <TableHead>
           <TableRow sx={{
             "& .MuiTableCell-head": {
               fontSize: "11px",
               fontWeight: "500",
-              color: "#6B7280",
-              backgroundColor: "#F1F5F9",
+              color: "#475467",
+              backgroundColor: "#EAECF0",
               padding: "8px 12px",
               textAlign: "center",
             }
           }}>
-            <TableCell sx={{ textAlign: "left !important" }}>Line #</TableCell>
-            <TableCell sx={{ textAlign: "left !important" }}>Product</TableCell>
+            <TableCell>Line #</TableCell>
+            <TableCell>Product</TableCell>
             <TableCell>Available Qty</TableCell>
             <TableCell>Ask Price (ea)</TableCell>
             <TableCell>Offer (ea)</TableCell>
@@ -108,102 +221,108 @@ const ExpandedTable = memo(({ rowId }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((line) => (
+          {data.map((line, index) => (
             <React.Fragment key={line.lineNumber}>
-              {line.offers.map((offer, index) => (
-                <TableRow 
-                  key={`${line.lineNumber}-${index}`}
-                  sx={{
-                    "& .MuiTableCell-body": {
-                      fontSize: "12px",
-                      color: "#374151",
-                      padding: "12px",
-                      textAlign: "center",
-                      borderBottom: "1px solid #E5E7EB",
-                    }
-                  }}
-                >
-                  {index === 0 && (
-                    <>
-                      <TableCell rowSpan={line.offers.length} sx={{ textAlign: "left !important", fontWeight: "500" }}>
-                        {line.lineNumber}
-                      </TableCell>
-                      <TableCell rowSpan={line.offers.length} sx={{ textAlign: "left !important" }}>
-                        {line.product}
-                      </TableCell>
-                      <TableCell rowSpan={line.offers.length}>
-                        {line.availableQty}
-                      </TableCell>
-                      <TableCell rowSpan={line.offers.length}>
-                        {typeof line.askPrice === 'number' ? formatCurrency(line.askPrice) : line.askPrice}
-                      </TableCell>
-                    </>
+              <TableRow 
+                sx={{
+                  "& .MuiTableCell-body": {
+                    backgroundColor: "#FFFFFF",
+                    fontSize: "12px",
+                    color: "#374151",
+                    padding: "12px",
+                    textAlign: "center",
+                    borderBottom: "1px solid #E5E7EB",
+                  }
+                }}
+              >
+                <TableCell rowSpan={1} sx={{ textAlign: "left ", fontWeight: "500" }}>
+                  {line.lineNumber}
+                </TableCell>
+                <TableCell rowSpan={1} sx={{ textAlign: "left " }}>
+                  {line.product}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {line.availableQty}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {formatCurrency(line.askPrice)}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {formatCurrency(line.offer)}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {formatCurrency(line.offer - line.askPrice)}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {line.availableQty}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {formatCurrency(line.totalValue)}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  {formatCurrency(line.avgOffer)}
+                </TableCell>
+                <TableCell rowSpan={1}>
+                  <Typography sx={{ 
+                    color: line.avgPercentage >= 0 ? "#10B981" : "#EF4444",
+                    fontWeight: "600"
+                  }}>
+                    {line.avgPercentage >= 0 ? "+" : ""}{line.avgPercentage}%
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <FormControl size="small" sx={{ minWidth: 80 }}>
+                    <Select
+                      value={line.action}
+                      sx={{
+                        fontSize: "12px",
+                        color: line.action === "Accept" ? "#10B981" : "#6B7280",
+                        fontWeight: line.action === "Accept" ? "600" : "400",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: line.action === "Accept" ? "#10B981" : "#D1D5DB",
+                        }
+                      }}
+                    >
+                      <MenuItem value="Select">Select</MenuItem>
+                      <MenuItem value="Accept">Accept</MenuItem>
+                      <MenuItem value="Reject">Reject</MenuItem>
+                    </Select>
+                  </FormControl>
+                </TableCell>
+                <TableCell>
+                  {line.subOffers && line.subOffers.length > 0 && (
+                    <IconButton 
+                      size="small"
+                      onClick={() => handleExpandClick(line.lineNumber)}
+                      sx={{
+                        transform: expandedRows.has(line.lineNumber) ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.2s ease',
+                      }}
+                    >
+                      <ExpandMoreIcon sx={{ fontSize: "16px" }} />
+                    </IconButton>
                   )}
-                  <TableCell>{formatCurrency(offer.offer)}</TableCell>
-                  <TableCell>
-                    {offer.percentage !== "-" ? (
-                      <Typography sx={{ 
-                        color: offer.percentage >= 0 ? "#10B981" : "#EF4444",
-                        fontWeight: "600"
-                      }}>
-                        {offer.percentage >= 0 ? "+" : ""}{offer.percentage}%
-                      </Typography>
-                    ) : "-"}
-                  </TableCell>
-                  <TableCell>{offer.qty}</TableCell>
-                  <TableCell>{formatCurrency(offer.totalValue)}</TableCell>
-                  <TableCell>{offer.avgOffer > 0 ? formatCurrency(offer.avgOffer) : "-"}</TableCell>
-                  <TableCell>
-                    <Typography sx={{ 
-                      color: "#10B981",
-                      fontWeight: "600"
-                    }}>
-                      {offer.avgPercentage}%
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    {offer.action === "Go to offer" ? (
-                      <Button
-                        variant="text"
-                        size="small"
-                        sx={{ 
-                          textTransform: "none",
-                          color: "#6366F1",
-                          textDecoration: "underline",
-                          "&:hover": { backgroundColor: "transparent" }
-                        }}
-                      >
-                        {offer.action}
-                      </Button>
-                    ) : (
-                      <FormControl size="small" sx={{ minWidth: 80 }}>
-                        <Select
-                          value={offer.action}
-                          sx={{
-                            fontSize: "12px",
-                            color: offer.action === "Accept" ? "#10B981" : "#6B7280",
-                            fontWeight: offer.action === "Accept" ? "600" : "400",
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: offer.action === "Accept" ? "#10B981" : "#D1D5DB",
-                            }
-                          }}
-                        >
-                          <MenuItem value="Select">Select</MenuItem>
-                          <MenuItem value="Accept">Accept</MenuItem>
-                          <MenuItem value="Reject">Reject</MenuItem>
-                        </Select>
-                      </FormControl>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {index === 0 && line.offers.length > 1 && (
-                      <IconButton size="small">
-                        <ExpandMoreIcon sx={{ fontSize: "16px" }} />
-                      </IconButton>
-                    )}
+                </TableCell>
+              </TableRow>
+              
+              {/* Sub-table without header */}
+
+                <TableRow>
+                  <TableCell 
+                    colSpan={12} 
+                    sx={{ 
+                      padding: 0,
+                      borderBottom: expandedRows.has(line.lineNumber) ? `1px solid ${COLORS.border}` : "none"
+                    }}
+                  >
+                    <Collapse in={expandedRows.has(line.lineNumber)} timeout="auto" unmountOnExit>
+                      <Box sx={{ backgroundColor: "#F9FAFB", p: 0 }}> 
+                        {renderSubTable(line.subOffers)}
+                      </Box>
+                    </Collapse>
                   </TableCell>
                 </TableRow>
-              ))}
+
             </React.Fragment>
           ))}
         </TableBody>
