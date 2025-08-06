@@ -106,7 +106,7 @@ const OffersTable = memo(({
                 <TableCell 
                   key={header.label}
                   className={index === 0 ? "company-column-header" : ""}
-                  sx={{ width: header.width }}
+                  sx={{ width: header.width }}  
                 >
                   {header.label}
                 </TableCell>
@@ -127,10 +127,6 @@ const OffersTable = memo(({
           </TableBody>
         </Table>
       </TableContainer>
-      
-      {variant === TABLE_VARIANTS.EXPANDABLE && (
-        <TableFooter onSubmit={handleSubmit} />
-      )}
     </Paper>
   );
 });

@@ -101,7 +101,7 @@ const EXPANDED_DATA = [
 
 
 const ExpandedTable = memo(({ rowId }) => {
-  const data = EXPANDED_DATA; // In real app, this would be dynamic based on rowId
+  const data = EXPANDED_DATA; // Replace with actual data fetching logic
   const [expandedRows, setExpandedRows] = useState(new Set());
 
   const handleExpandClick = (lineNumber) => {
